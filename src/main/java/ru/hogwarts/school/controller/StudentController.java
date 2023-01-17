@@ -12,57 +12,41 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/student")
-
 public class StudentController {
+
     private final StudentService studentService;
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<Student> getStudentInfo(@PathVariable Long id) {
+        Student student = studentService.findStudent(id);
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(student);
+    }
+
+
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
-        return studentService.createStudent(student);
+        return studentService.addStudent(student);
     }
 
-    @GetMapping("{studentID}")
-    public ResponseEntity<Student> getStudent(@PathVariable Long studentID) {
-        Student student = studentService.getStudentByID(studentID);
-        if (student == null) {
-            return ResponseEntity.notFound().build();
+    @PutMapping
+    public ResponseEntity<Student> editStudent(@PathVariable Long id, @RequestBody Student student) {
+        Student foundStudent = studentService.editStudent(id, student);
+        if (foundStudent == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(foundStudent);
     }
 
-    @GetMapping
-    public ResponseEntity<Collection<Student>> getAll() {
-        return ResponseEntity.ok(studentService.getAll());
-    }
-
-    @PostMapping("/filter/{age}")
-    public ResponseEntity<Collection<Student>> getStudentByAge(@PathVariable int age) {
-        var studentsByAge = studentService.getStudentByAge(age);
-        if (studentsByAge == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(studentsByAge);
-    }
-
-    @PutMapping("{studentID}")
-    public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
-        Student updateStudent = studentService.updateStudent(student);
-        if (updateStudent == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok(updateStudent);
-    }
-
-    @DeleteMapping("{studentID}")
-    public ResponseEntity deleteStudent(@PathVariable Long studentID) {
-        Student student = studentService.deleteStudent(studentID);
-        if (student == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(student);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 }

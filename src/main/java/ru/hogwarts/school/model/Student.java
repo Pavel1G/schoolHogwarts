@@ -34,9 +34,12 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Студент с id = " + id + ", зовут " + name + ", возраст " + age + " лет.";
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
-
 
     public long getId() {
         return id;
@@ -61,5 +64,4 @@ public class Student {
     public void setAge(int age) {
         this.age = age;
     }
-
 }

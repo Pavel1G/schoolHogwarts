@@ -9,38 +9,29 @@ import java.util.Map;
 
 @Service
 public class StudentService {
-    private HashMap<Long, Student> students = new HashMap<>();
-    private Long generateStudentID = 1L;
 
-    public Student createStudent(Student student) {
-        student.setId(generateStudentID++);
+    private final HashMap<Long, Student> students = new HashMap<>();
+    private long count = 0;
+
+    public Student addStudent(Student student) {
+        student.setId(count++);
         students.put(student.getId(), student);
         return student;
     }
 
-    public Student getStudentByID(Long studentID) {
-        return students.get(studentID);
+    public Student findStudent(long id) {
+        return students.get(id);
     }
 
-    public Student updateStudent(Student student) {
-        if (!students.containsKey(student.getId())) {
+    public Student editStudent(long id, Student student) {
+        if (!students.containsKey(id)) {
             return null;
         }
-        students.put(student.getId(), student);
+        students.put(id, student);
         return student;
     }
 
-    public Student deleteStudent(Long studentID) {
-        return students.remove(studentID);
-    }
-
-    public Collection<Student> getAll() {
-        return students.values();
-    }
-
-    public Collection<Student> getStudentByAge(int ageStudent) {
-        return students.values().stream()
-                .filter(s -> s.getAge() == ageStudent)
-                .toList();
+    public Student deleteStudent(long id) {
+        return students.remove(id);
     }
 }
