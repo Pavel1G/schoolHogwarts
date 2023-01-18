@@ -5,13 +5,12 @@ import ru.hogwarts.school.model.Student;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class StudentService {
 
     private final HashMap<Long, Student> students = new HashMap<>();
-    private long count = 0;
+    private long count = 1;
 
     public Student addStudent(Student student) {
         student.setId(count++);
@@ -19,7 +18,7 @@ public class StudentService {
         return student;
     }
 
-    public Student findStudent(long id) {
+    public Student getStudent(long id) {
         return students.get(id);
     }
 
@@ -33,5 +32,11 @@ public class StudentService {
 
     public Student deleteStudent(long id) {
         return students.remove(id);
+    }
+
+    public Collection<Student> getAllStudentsByAge(int age) {
+        return students.values().stream()
+                .filter(s -> s.getAge() == age)
+                .toList();
     }
 }

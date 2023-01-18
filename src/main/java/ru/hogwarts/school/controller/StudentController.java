@@ -1,6 +1,6 @@
 package ru.hogwarts.school.controller;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import java.util.Collection;
 
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("student")
 public class StudentController {
 
     private final StudentService studentService;
@@ -21,8 +21,8 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> getStudentInfo(@PathVariable Long id) {
-        Student student = studentService.findStudent(id);
+    public ResponseEntity<?> getStudentInfo(@PathVariable long id) {
+        Student student = studentService.getStudent(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
@@ -36,7 +36,7 @@ public class StudentController {
     }
 
     @PutMapping
-    public ResponseEntity<Student> editStudent(@PathVariable Long id, @RequestBody Student student) {
+    public ResponseEntity<?> editStudent(@PathVariable long id, @RequestBody Student student) {
         Student foundStudent = studentService.editStudent(id, student);
         if (foundStudent == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -45,8 +45,17 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
+    public ResponseEntity<?> deleteStudent(@PathVariable long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("{age}")
+    public ResponseEntity<?> findStudentsByAge(@PathVariable int age) {
+        var students = studentService.getAllStudentsByAge(age);
+        if (students.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(students);
     }
 }
