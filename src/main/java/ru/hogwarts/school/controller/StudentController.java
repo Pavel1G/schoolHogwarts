@@ -37,7 +37,7 @@ public class StudentController {
 
     @PutMapping
     public ResponseEntity<Student> editStudent(@PathVariable long id, @RequestBody Student student) {
-        Student foundStudent = studentService.editStudent(id, student);
+        var foundStudent = studentService.editStudent(id, student);
         if (foundStudent == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -50,7 +50,7 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("{age}")
+    @GetMapping(path = "/filter/{age}")
     public ResponseEntity<Collection<Student>> findStudentsByAge(@PathVariable int age) {
         var students = studentService.getAllStudentsByAge(age);
         if (students.isEmpty()) {
