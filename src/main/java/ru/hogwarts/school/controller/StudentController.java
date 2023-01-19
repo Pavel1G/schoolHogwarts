@@ -36,8 +36,8 @@ public class StudentController {
     }
 
     @PutMapping
-    public ResponseEntity<Student> editStudent(@PathVariable long id, @RequestBody Student student) {
-        var foundStudent = studentService.editStudent(id, student);
+    public ResponseEntity<Student> editStudent(@RequestBody Student student) {
+        var foundStudent = studentService.editStudent(student);
         if (foundStudent == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
