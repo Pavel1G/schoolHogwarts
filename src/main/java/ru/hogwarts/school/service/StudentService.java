@@ -1,12 +1,11 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -21,8 +20,8 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student getStudent(long id) {
-        return studentRepository.getById(id);
+    public Optional<Student> getStudent(long id) {
+        return studentRepository.findById(id);
     }
 
     public Student editStudent(Student student) {
