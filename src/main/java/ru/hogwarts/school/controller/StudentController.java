@@ -26,7 +26,12 @@ public class StudentController {
         if (student.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(student.get());
+    }
+
+    @GetMapping()
+    public Collection<Student> getAllStudentInfo() {
+        return studentService.getAllStudent();
     }
 
 
@@ -57,5 +62,21 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(students);
+    }
+
+    @GetMapping(path = "/filter")
+    public ResponseEntity<?> findStudentsByAgeBetween(@RequestParam int minAge,
+                                                      @RequestParam int maxAge) {
+        var students = studentService.findByAgeBetween(minAge, maxAge);
+        if (students.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(students);
+    }
+
+    @GetMapping(path = "/faculty")
+    public ResponseEntity<?> getStudentByFaculty(@RequestParam long idFaculty) {
+        var findFaculty = studentService.getStudentByFaculty(idFaculty);
+        return ResponseEntity.ok(findFaculty);
     }
 }

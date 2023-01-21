@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
@@ -14,9 +15,12 @@ import java.util.Collection;
 
 public class FacultyController {
     private final FacultyService facultyService;
+    private final FacultyRepository facultyRepository;
 
-    public FacultyController(FacultyService facultyService) {
+    public FacultyController(FacultyService facultyService,
+                             FacultyRepository facultyRepository) {
         this.facultyService = facultyService;
+        this.facultyRepository = facultyRepository;
     }
 
     @PostMapping
@@ -30,7 +34,23 @@ public class FacultyController {
         if (faculty.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(faculty);
+        return ResponseEntity.ok(faculty.get());
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> findFaculty(@RequestParam(required = false) String name,
+                                         @RequestParam(required = false) String color) {
+        Collection<Faculty> temp = facultyService.findFacultiesByColorContainsIgnoreCase(name, color);
+        if (temp.isEmpty()) {
+            return new ResponseEntity<>("Факультеты не найдены", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(temp);
+    }
+
+    @GetMapping(path = "faculty")
+    public ResponseEntity<?> findFaculty(@RequestParam Long idStudent) {
+        var findFaculty = facultyService.findFacultyByStudentId(idStudent);
+        return ResponseEntity.ok((findFaculty));
     }
 
     @PostMapping("{color}")
