@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
@@ -74,9 +75,19 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping(path = "/faculty")
+/*    @GetMapping(path = "/faculty")
     public ResponseEntity<?> getStudentByFaculty(@RequestParam long idFaculty) {
         var findFaculty = studentService.getStudentByFaculty(idFaculty);
         return ResponseEntity.ok(findFaculty);
+    }
+*/
+
+    @GetMapping(path = "/faculty")
+    public ResponseEntity<?> findFacultyStudent(@RequestParam Long idStudent) {
+        Faculty foundFaculty = studentService.findFacultByStudent(idStudent);
+        if (foundFaculty == null) {
+            return new ResponseEntity<>("Студент отчислен/не учится", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(foundFaculty);
     }
 }

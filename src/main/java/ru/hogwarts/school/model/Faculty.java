@@ -50,6 +50,10 @@ public class Faculty {
         this.color = color;
     }
 
+//    public Collection<Student> getStudent() {
+//        return student;
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

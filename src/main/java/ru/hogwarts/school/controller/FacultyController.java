@@ -28,6 +28,15 @@ public class FacultyController {
         return facultyService.createFaculty(faculty);
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAllFaculty() {
+        var faculty = facultyService.getAllFaculty();
+        if (faculty.isEmpty()) {
+            return new ResponseEntity<>("Факультетов нет", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(faculty);
+    }
+
     @GetMapping("{facultyID}")
     public ResponseEntity<?> getFaculty(@PathVariable Long facultyID) {
         var faculty = facultyService.getFacultyByID(facultyID);
@@ -37,7 +46,7 @@ public class FacultyController {
         return ResponseEntity.ok(faculty.get());
     }
 
-    @GetMapping()
+    @GetMapping(path = "find")
     public ResponseEntity<?> findFaculty(@RequestParam(required = false) String name,
                                          @RequestParam(required = false) String color) {
         Collection<Faculty> temp = facultyService.findFacultiesByColorContainsIgnoreCase(name, color);
@@ -52,6 +61,15 @@ public class FacultyController {
         var findFaculty = facultyService.findFacultyByStudentId(idStudent);
         return ResponseEntity.ok((findFaculty));
     }
+
+//    @GetMapping(path = "students")
+//    public ResponseEntity<?> getAllStudents(@RequestParam Long facultyID) {
+//        var students = facultyService.getAllStudents(facultyID);
+//        if (students.isEmpty()) {
+//            return new ResponseEntity<>("Студентов нет.", HttpStatus.NOT_FOUND);
+//        }
+//        return ResponseEntity.ok(students);
+//    }
 
     @PostMapping("{color}")
     public ResponseEntity<Collection<Faculty>> getFacultyByColor(@PathVariable String color) {
