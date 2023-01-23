@@ -1,5 +1,7 @@
 package ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -14,6 +16,9 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name = "faculty_id")
+    @JsonBackReference          //Для сериализации - процесс, который переводит объект в последовательность байтов,
+    // по которой затем его можно полностью восстановить.
+    // На этой аннотации фактически останавливается десериализация.
     private Faculty faculty;
 
     public Student() {

@@ -74,14 +74,6 @@ public class StudentController {
         }
         return ResponseEntity.ok(students);
     }
-
-/*    @GetMapping(path = "/faculty")
-    public ResponseEntity<?> getStudentByFaculty(@RequestParam long idFaculty) {
-        var findFaculty = studentService.getStudentByFaculty(idFaculty);
-        return ResponseEntity.ok(findFaculty);
-    }
-*/
-
     @GetMapping(path = "/faculty")
     public ResponseEntity<?> findFacultyStudent(@RequestParam Long idStudent) {
         Faculty foundFaculty = studentService.findFacultByStudent(idStudent);

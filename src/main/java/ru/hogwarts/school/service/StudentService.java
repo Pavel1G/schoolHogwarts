@@ -48,10 +48,4 @@ public class StudentService {
     public Faculty findFacultByStudent(Long idStudent) {
         return studentRepository.findById(idStudent).get().getFaculty();
     }
-
-/*
-    public Collection<Student> getStudentByFaculty(long idFaculty) {
-    return studentRepository.findStudentsByFacultyId(idFaculty);
-    }
- */
 }

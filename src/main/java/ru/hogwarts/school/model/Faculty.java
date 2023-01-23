@@ -1,5 +1,7 @@
 package ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
@@ -14,6 +16,8 @@ public class Faculty {
     private String color;
 
     @OneToMany(mappedBy = "faculty")
+    @JsonManagedReference //Для сериализации - процесс, который переводит объект в последовательность байтов,
+    // по которой затем его можно полностью восстановить.
     private Collection<Student> student;
 
 
@@ -50,9 +54,10 @@ public class Faculty {
         this.color = color;
     }
 
-//    public Collection<Student> getStudent() {
-//        return student;
-//    }
+    @JsonManagedReference
+    public Collection<Student> getStudent() {
+        return student;
+    }
 
     @Override
     public boolean equals(Object o) {

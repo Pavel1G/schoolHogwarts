@@ -62,14 +62,14 @@ public class FacultyController {
         return ResponseEntity.ok((findFaculty));
     }
 
-//    @GetMapping(path = "students")
-//    public ResponseEntity<?> getAllStudents(@RequestParam Long facultyID) {
-//        var students = facultyService.getAllStudents(facultyID);
-//        if (students.isEmpty()) {
-//            return new ResponseEntity<>("Студентов нет.", HttpStatus.NOT_FOUND);
-//        }
-//        return ResponseEntity.ok(students);
-//    }
+    @GetMapping(path = "students")
+    public ResponseEntity<?> getAllStudents(@RequestParam Long facultyID) {
+        var students = facultyService.getAllStudents(facultyID);
+        if (students.isEmpty()) {
+            return new ResponseEntity<>("Студентов нет.", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(students);
+    }
 
     @PostMapping("{color}")
     public ResponseEntity<Collection<Faculty>> getFacultyByColor(@PathVariable String color) {
