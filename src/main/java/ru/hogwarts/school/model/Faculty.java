@@ -15,7 +15,7 @@ public class Faculty {
     private String name;
     private String color;
 
-    @OneToMany(mappedBy = "faculty")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty")
     @JsonManagedReference //Для сериализации - процесс, который переводит объект в последовательность байтов,
     // по которой затем его можно полностью восстановить.
     private Collection<Student> student;
