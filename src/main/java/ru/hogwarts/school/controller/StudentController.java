@@ -74,6 +74,7 @@ public class StudentController {
         }
         return ResponseEntity.ok(students);
     }
+
     @GetMapping(path = "/faculty")
     public ResponseEntity<?> findFacultyStudent(@RequestParam Long idStudent) {
         Faculty foundFaculty = studentService.findFacultByStudent(idStudent);
@@ -81,5 +82,20 @@ public class StudentController {
             return new ResponseEntity<>("Студент отчислен/не учится", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(foundFaculty);
+    }
+
+    @GetMapping("/count")
+    public Integer countAllStudent() {
+        return studentService.getCountAllStudent();
+    }
+
+    @GetMapping("/avarage_age")
+    public String avarageAgeByStudents() {
+        return studentService.getAvarageAgeByStudents();
+    }
+
+    @GetMapping("/last_five_student")
+    public Collection<Student> lastFiveStudent() {
+        return studentService.getLastFiveStudent();
     }
 }
