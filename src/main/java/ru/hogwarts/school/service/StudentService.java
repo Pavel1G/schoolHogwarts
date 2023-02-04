@@ -5,6 +5,8 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -47,5 +49,18 @@ public class StudentService {
 
     public Faculty findFacultByStudent(Long idStudent) {
         return studentRepository.findById(idStudent).get().getFaculty();
+    }
+
+    public Integer getCountAllStudent() {
+        return studentRepository.getCountAllStudent();
+    }
+
+    public String getAvarageAgeByStudents() {
+        Double age = studentRepository.getAvarageAgeByAllStudent();
+        return new DecimalFormat("#.#").format(age);
+    }
+
+    public Collection<Student> getLastFiveStudent() {
+        return studentRepository.getLastFiveStudent();
     }
 }
