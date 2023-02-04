@@ -1,5 +1,8 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,32 +31,21 @@ public class FacultyController {
         return facultyService.createFaculty(faculty);
     }
 
+    //Работа с классом Page
     @GetMapping
-    public ResponseEntity<?> getAllFaculty() {
-        var faculty = facultyService.getAllFaculty();
-        if (faculty.isEmpty()) {
-            return new ResponseEntity<>("Факультетов нет", HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(faculty);
+    public Page<Faculty> getAllFaculty(@PageableDefault Pageable pageable) {
+        return facultyService.getAllFaculty(pageable);
     }
 
     @GetMapping("{facultyID}")
     public ResponseEntity<?> getFaculty(@PathVariable Long facultyID) {
-        var faculty = facultyService.getFacultyByID(facultyID);
-        if (faculty.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(faculty.get());
+        return ResponseEntity.ok(facultyService.getFacultyByID(facultyID));
     }
 
     @GetMapping(path = "find")
     public ResponseEntity<?> findFaculty(@RequestParam(required = false) String name,
                                          @RequestParam(required = false) String color) {
-        Collection<Faculty> temp = facultyService.findFacultiesByColorContainsIgnoreCase(name, color);
-        if (temp.isEmpty()) {
-            return new ResponseEntity<>("Факультеты не найдены", HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(temp);
+        return ResponseEntity.ok(facultyService.findFacultiesByColorContainsIgnoreCase(name, color));
     }
 
     @GetMapping(path = "faculty")
@@ -65,6 +57,7 @@ public class FacultyController {
     @GetMapping(path = "students")
     public ResponseEntity<?> getAllStudents(@RequestParam Long facultyID) {
         var students = facultyService.getAllStudents(facultyID);
+        // Перенести всю логику в Service по аналогии выше.
         if (students.isEmpty()) {
             return new ResponseEntity<>("Студентов нет.", HttpStatus.NOT_FOUND);
         }

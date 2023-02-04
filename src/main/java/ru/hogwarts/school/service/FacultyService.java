@@ -1,12 +1,14 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exception.entityNotFoundMyException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
 public class FacultyService {
@@ -21,8 +23,9 @@ public class FacultyService {
         return facultyRepository.save(faculty);
     }
 
-    public Optional<Faculty> getFacultyByID(Long facultyID) {
-        return facultyRepository.findById(facultyID);
+    public Faculty getFacultyByID(Long facultyID) {
+        return facultyRepository.findById(facultyID)
+                .orElseThrow(()->new entityNotFoundMyException("Не найден факультет с id: " + facultyID));
     }
 
     public Faculty updateFaculty(Faculty faculty) {
@@ -38,7 +41,11 @@ public class FacultyService {
     }
 
     public Collection<Faculty> findFacultiesByColorContainsIgnoreCase(String name, String color) {
-        return facultyRepository.findFacultiesByNameIgnoreCaseOrColorIgnoreCase(name, color);
+        var faculties = facultyRepository.findFacultiesByNameIgnoreCaseOrColorIgnoreCase(name, color);
+        if(faculties.isEmpty()){
+            new entityNotFoundMyException("Список факультетов(поиск по имени/цвету пустой.");
+        }
+        return faculties;
     }
 
     public Collection<Faculty> findAllFaculty() {
@@ -49,8 +56,13 @@ public class FacultyService {
         return facultyRepository.findFacultyByStudentId(idStudent);
     }
 
-    public Collection<Faculty> getAllFaculty() {
-        return facultyRepository.findAll();
+    //Работа с классом Page
+    public Page<Faculty> getAllFaculty(Pageable pageable) {
+        var faculties = facultyRepository.findAll(pageable);
+        if(faculties.isEmpty()){
+            new entityNotFoundMyException("Список факультетов пустой.");
+        }
+        return faculties;
     }
 
     public Collection<Student> getAllStudents(Long facultyID) {

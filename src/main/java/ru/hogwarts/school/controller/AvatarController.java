@@ -63,5 +63,8 @@ public class AvatarController {
             is.transferTo(os);
         }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> For_mentor_test
 }
