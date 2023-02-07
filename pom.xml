@@ -40,6 +40,12 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- Зависимость для Liquibase, позволяющая работать с БД нескольким разработчикам одновременно-->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+
         <!-- Зависимость для testresttemplates, чтобы не затрагивало основную БД-->
         <dependency>
             <groupId>com.h2database</groupId>
