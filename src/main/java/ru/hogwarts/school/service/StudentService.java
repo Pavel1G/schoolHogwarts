@@ -7,10 +7,13 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.averagingDouble;
 
 @Service
 public class StudentService {
@@ -19,7 +22,6 @@ public class StudentService {
     private final StudentRepository studentRepository;
 
     Logger logger = LoggerFactory.getLogger(StudentService.class);
-
 
 
     public StudentService(StudentRepository studentRepository) {
@@ -81,4 +83,22 @@ public class StudentService {
         logger.debug("Was invoked method for get last 5 students in the repository");
         return studentRepository.getLastFiveStudent();
     }
+
+    public List<String> getSortedStudents() {
+        logger.debug("Was invoked method for get students sorted by name");
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .filter(name -> name.startsWith("A"))
+                .map(name -> name.toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+//    public Double calculateAvarageAge() {
+//        logger.debug("Was invoked method for get student's avarage age");
+//        return studentRepository.findAll().stream()
+//                .collect(averagingDouble(Student::getAge));
+//    }
+
+
 }

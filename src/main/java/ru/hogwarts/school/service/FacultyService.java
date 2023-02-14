@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import liquibase.pro.packaged.F;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 @Service
 public class FacultyService {
@@ -77,7 +79,7 @@ public class FacultyService {
 
         var faculties = facultyRepository.findAll(pageable);
         if(faculties.isEmpty()){
-            new entityNotFoundMyException("Список факультетов пустой.");
+            throw new entityNotFoundMyException("Список факультетов пустой.");
         }
         return faculties;
     }
@@ -86,5 +88,12 @@ public class FacultyService {
         logger.debug("Was invoked method for get students by faculty ID");
 
         return facultyRepository.findById(facultyID).get().getStudent();
+    }
+
+    public String getLongestName() {
+        return facultyRepository.findAll().stream()
+                .max(Comparator.comparing(f -> f.getName().length()))
+                .map(Faculty::getName)
+                .orElse(String.valueOf(new entityNotFoundMyException("Список факультетов пустой.")));
     }
 }

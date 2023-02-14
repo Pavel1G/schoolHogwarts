@@ -9,6 +9,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 
 
 @RestController
@@ -35,6 +36,15 @@ public class StudentController {
         return studentService.getAllStudent();
     }
 
+    @GetMapping("/sorted")
+    public ResponseEntity<List<String>> sortedStudents(){
+        return ResponseEntity.ok(studentService.getSortedStudents());
+    }
+
+//    @GetMapping("/avarage_age")
+//    public ResponseEntity<Double> averageAgeStudents(){
+//        return ResponseEntity.ok(studentService.calculateAvarageAge());
+//    }
 
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
