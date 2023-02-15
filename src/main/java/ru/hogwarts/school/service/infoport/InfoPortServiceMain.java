@@ -20,10 +20,8 @@ public class InfoPortServiceMain implements InfoPortService {
 
     @Override
     public Integer getIntegerByStream() {
-        return Stream.iterate(1, a -> a + 1)
-                .limit(1_000_000)
-                .mapToInt(Integer::intValue)
-                .sum();
+        return ((1 + 1_000_000) / 2) * 1_000_000;
+
     }
 
 
