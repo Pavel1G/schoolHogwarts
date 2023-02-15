@@ -19,9 +19,8 @@ public class InfoPortServiceMain implements InfoPortService {
     }
 
     @Override
-    public Integer getIntegerByStream() {
-        return ((1 + 1_000_000) / 2) * 1_000_000;
-
+    public Long getIntegerByStream() {
+        return (long) ((1 + 1_000_000) / 2) * 1_000_000;
     }
 
 

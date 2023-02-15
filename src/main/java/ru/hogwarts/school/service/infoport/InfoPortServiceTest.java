@@ -12,7 +12,7 @@ public class InfoPortServiceTest implements InfoPortService {
     }
 
     @Override
-    public Integer getIntegerByStream() {
-        return 0;
+    public Long getIntegerByStream() {
+        return 0L;
     }
 }

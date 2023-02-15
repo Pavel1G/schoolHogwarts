@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 public interface InfoPortService {
     Integer getPort();
 
-    Integer getIntegerByStream();
+    Long getIntegerByStream();
 }
