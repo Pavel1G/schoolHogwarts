@@ -9,6 +9,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -92,6 +93,61 @@ public class StudentService {
                 .map(name -> name.toUpperCase())
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    public void getStudentsWithParallelThreads() {
+        logger.debug("Was invoked method for get student's by parallels threads");
+
+        List<String> studentList = studentRepository.findAll().stream()
+                .sorted(Comparator.comparing(Student::getId))
+                .map(Student::getName)
+                .limit(6)
+                .collect(Collectors.toList());
+        System.out.println(studentList);
+        System.out.println("-----------------------------");
+        System.out.println(studentList.get(0));
+        System.out.println(studentList.get(1));
+
+        new Thread(() ->
+        {
+            System.out.println(studentList.get(2));
+            System.out.println(studentList.get(3));
+        }).start();
+
+        new Thread(() ->
+        {
+            System.out.println(studentList.get(4));
+            System.out.println(studentList.get(5));
+        }).start();
+    }
+
+    public void getStudentsWithParallelThreadsSynchro() {
+        logger.debug("Was invoked method for get student's by parallels threads (synchronized block)");
+
+        List<String> studentList = studentRepository.findAll().stream()
+                .sorted(Comparator.comparing(Student::getId))
+                .map(Student::getName)
+                .limit(6)
+                .collect(Collectors.toList());
+        System.out.println(studentList);
+        System.out.println("-----------------------------");
+
+        synchronized (this) {
+            System.out.println(studentList.get(0));
+            System.out.println(studentList.get(1));
+
+            new Thread(() ->
+            {
+                System.out.println(studentList.get(2));
+                System.out.println(studentList.get(3));
+            }).start();
+
+            new Thread(() ->
+            {
+                System.out.println(studentList.get(4));
+                System.out.println(studentList.get(5));
+            }).start();
+        }
     }
 
 //    public Double calculateAvarageAge() {

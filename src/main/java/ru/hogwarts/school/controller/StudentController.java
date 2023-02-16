@@ -36,6 +36,16 @@ public class StudentController {
         return studentService.getAllStudent();
     }
 
+    @GetMapping(path = "/student_parallel_threads")
+    public void studentsWithParallelThreads(){
+        studentService.getStudentsWithParallelThreads();
+    }
+
+    @GetMapping(path = "/student_parallel_threads_synchro")
+    public void studentsWithParallelThreadsSynhro(){
+        studentService.getStudentsWithParallelThreadsSynchro();
+    }
+
     @GetMapping("/sorted")
     public ResponseEntity<List<String>> sortedStudents(){
         return ResponseEntity.ok(studentService.getSortedStudents());
