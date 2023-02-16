@@ -2,7 +2,6 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +15,12 @@ public class InfoController {
     private InfoPortService infoPortService;
 
     @GetMapping("/info")
-    public ResponseEntity<?> getInfoPort() {
+    public ResponseEntity<?> infoPort() {
         return ResponseEntity.ok(infoPortService.getPort());
+    }
+
+    @GetMapping
+    public ResponseEntity<?> someInteger(){
+        return ResponseEntity.ok(infoPortService.getIntegerByStream());
     }
 }

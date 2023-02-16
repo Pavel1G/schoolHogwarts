@@ -7,10 +7,14 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.averagingDouble;
 
 @Service
 public class StudentService {
@@ -19,7 +23,6 @@ public class StudentService {
     private final StudentRepository studentRepository;
 
     Logger logger = LoggerFactory.getLogger(StudentService.class);
-
 
 
     public StudentService(StudentRepository studentRepository) {
@@ -81,4 +84,77 @@ public class StudentService {
         logger.debug("Was invoked method for get last 5 students in the repository");
         return studentRepository.getLastFiveStudent();
     }
+
+    public List<String> getSortedStudents() {
+        logger.debug("Was invoked method for get students sorted by name");
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .filter(name -> name.startsWith("A"))
+                .map(name -> name.toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public void getStudentsWithParallelThreads() {
+        logger.debug("Was invoked method for get student's by parallels threads");
+
+        List<String> studentList = studentRepository.findAll().stream()
+                .sorted(Comparator.comparing(Student::getId))
+                .map(Student::getName)
+                .limit(6)
+                .collect(Collectors.toList());
+        System.out.println(studentList);
+        System.out.println("-----------------------------");
+        System.out.println(studentList.get(0));
+        System.out.println(studentList.get(1));
+
+        new Thread(() ->
+        {
+            System.out.println(studentList.get(2));
+            System.out.println(studentList.get(3));
+        }).start();
+
+        new Thread(() ->
+        {
+            System.out.println(studentList.get(4));
+            System.out.println(studentList.get(5));
+        }).start();
+    }
+
+    public void getStudentsWithParallelThreadsSynchro() {
+        logger.debug("Was invoked method for get student's by parallels threads (synchronized block)");
+
+        List<String> studentList = studentRepository.findAll().stream()
+                .sorted(Comparator.comparing(Student::getId))
+                .map(Student::getName)
+                .limit(6)
+                .collect(Collectors.toList());
+        System.out.println(studentList);
+        System.out.println("-----------------------------");
+
+        synchronized (this) {
+            System.out.println(studentList.get(0));
+            System.out.println(studentList.get(1));
+
+            new Thread(() ->
+            {
+                System.out.println(studentList.get(2));
+                System.out.println(studentList.get(3));
+            }).start();
+
+            new Thread(() ->
+            {
+                System.out.println(studentList.get(4));
+                System.out.println(studentList.get(5));
+            }).start();
+        }
+    }
+
+//    public Double calculateAvarageAge() {
+//        logger.debug("Was invoked method for get student's avarage age");
+//        return studentRepository.findAll().stream()
+//                .collect(averagingDouble(Student::getAge));
+//    }
+
+
 }

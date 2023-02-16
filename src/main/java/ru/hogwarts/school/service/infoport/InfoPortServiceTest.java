@@ -10,4 +10,9 @@ public class InfoPortServiceTest implements InfoPortService {
     public Integer getPort() {
         return 0;
     }
+
+    @Override
+    public Long getIntegerByStream() {
+        return 0L;
+    }
 }

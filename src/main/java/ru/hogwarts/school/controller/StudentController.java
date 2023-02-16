@@ -9,6 +9,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 
 
 @RestController
@@ -35,6 +36,25 @@ public class StudentController {
         return studentService.getAllStudent();
     }
 
+    @GetMapping(path = "/student_parallel_threads")
+    public void studentsWithParallelThreads(){
+        studentService.getStudentsWithParallelThreads();
+    }
+
+    @GetMapping(path = "/student_parallel_threads_synchro")
+    public void studentsWithParallelThreadsSynhro(){
+        studentService.getStudentsWithParallelThreadsSynchro();
+    }
+
+    @GetMapping("/sorted")
+    public ResponseEntity<List<String>> sortedStudents(){
+        return ResponseEntity.ok(studentService.getSortedStudents());
+    }
+
+//    @GetMapping("/avarage_age")
+//    public ResponseEntity<Double> averageAgeStudents(){
+//        return ResponseEntity.ok(studentService.calculateAvarageAge());
+//    }
 
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
